@@ -1,10 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.io.IOException;
+import java.net.*;
 
 public class ChatClient extends Frame
 {
 	private TextField tf = new TextField();
 	private TextArea  ta= new TextArea();
+	private Socket s = null;
 	
 	public static void main(String[] args) 
 	{
@@ -29,15 +33,42 @@ public class ChatClient extends Frame
 				System.exit(0);
 			}
 		});
+		connect();
+		
 	}
 	
 	private class  TfListener  implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)	
 		{
-			String s = tf.getText().trim();
-			ta.setText(s);
+			String str = tf.getText().trim();
+			ta.setText(str);
 			tf.setText("");
+			DataOutputStream dos=null;;
+			try
+			{
+				dos = new DataOutputStream(s.getOutputStream());
+				dos.writeUTF(str);
+				dos.flush();
+				dos.close();
+			}
+			catch (IOException e1)
+			{
+				e1.printStackTrace();
+System.out.println("write failure");	
+			}
+		}
+	}
+	
+	public void connect()
+	{
+		try 
+		{
+			 s =  new Socket("127.0.0.1",5555);
+			 System.out.println("client connected");		
+		}  catch (IOException e) 
+		{
+			e.printStackTrace();
 		}
 	}
 }
