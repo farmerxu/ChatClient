@@ -50,7 +50,7 @@ public class ChatClient extends Frame
 				dos = new DataOutputStream(s.getOutputStream());
 				dos.writeUTF(str);
 				dos.flush();
-				dos.close();
+				//dos.close();
 			}
 			catch (IOException e1)
 			{
