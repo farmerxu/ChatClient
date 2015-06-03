@@ -6,6 +6,7 @@ public class ChatServer
 {
 	ServerSocket ss=null;
 	boolean start= false;
+	
 	List<Client> clients = new  ArrayList<Client>();
 	
 	public static void main(String[] args) 
@@ -15,9 +16,19 @@ public class ChatServer
 	
 	public void start()
 	{
-		try {
-			 ss = new ServerSocket(5555);
+		
+			 try {
+				 ss = new ServerSocket(5555);
+			 	} catch (BindException e) {
+				//System.out.println("");
+				System.out.println("该端口已经被绑定！");
+				System.exit(0);	
+			} catch (IOException e) {
+					e.printStackTrace();
+				}
+		
 			start=true;
+		try{
 			while(start) 
 			{
 				Socket s = ss.accept();
@@ -91,10 +102,15 @@ System.out.println("a client connected!");
 						System.out.println(str);
 					}
 				}	
+			}
+			catch (EOFException e) 
+			{
+				System.out.println("Client closed!");
 			}catch (IOException e)
 			{
 				e.printStackTrace();
 			}
+			
 			finally
 			{
 				try
