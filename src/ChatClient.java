@@ -5,7 +5,7 @@ import java.net.*;
 
 public class ChatClient extends Frame
 {
-	TextField tf = new TextField();
+	TextField tf = new TextField(); 
 	TextArea  ta= new TextArea();
 	Socket s = null;
 	private boolean flag = false ;
@@ -64,13 +64,29 @@ System.out.println("write failure");
 	
 	public void disconnect() {
 		try {
+			flag =false;//必须保证线程停掉
+		
 			dos.close();
+			dis.close();//应该先关掉这个，不然会有阻塞错误，关掉时还在执行线程，应先把flag=false;
+			
 			s.close();
-			dis.close();
-			flag =false;
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
+		/*
+		finally
+		{
+			try {
+				dos.close();
+				dis.close();
+				s.close();
+				} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		*/
 		
 	}
 	
@@ -106,9 +122,14 @@ System.out.println("write failure");
 						String str = dis.readUTF();
 						ta.setText(ta.getText()+ str + '\n');
 				}
-			}catch(SocketException e)
+			}
+			//这是一种方法，catch到socketexception将他停止
+			catch(SocketException e)
 			{
-				System.out.println("server closed!");
+				System.out.println("退出了");
+			}
+			catch (EOFException e) {
+				System.out.println("bye - bye!");
 			}
 			catch (IOException e) {
 				// TODO Auto-generated catch block
