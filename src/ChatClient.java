@@ -1,4 +1,4 @@
-/*import java.awt.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
@@ -53,7 +53,7 @@ public class ChatClient extends Frame
 			{
 				dos.writeUTF(str);
 				dos.flush();
-			}
+			}	 
 			catch (IOException e1)
 			{
 				e1.printStackTrace();
@@ -69,7 +69,6 @@ System.out.println("write failure");
 			dis.close();
 			flag =false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -79,9 +78,9 @@ System.out.println("write failure");
 	{
 		try 
 		{
+			 s =  new Socket("127.0.0.1",5555);
 			 dos = new DataOutputStream(s.getOutputStream());
 			 dis = new DataInputStream(s.getInputStream());
-			 s =  new Socket("127.0.0.1",5555);
 			 flag = true;
 			 System.out.println("client connected");		
 		}  
@@ -119,8 +118,8 @@ System.out.println("write failure");
 		
 	}
 }
-*/
-import java.awt.*;
+
+/*import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.*;
@@ -187,7 +186,7 @@ System.out.println("connected!");
 			e.printStackTrace();
 		}
 		
-		/*
+		
 		try {
 			bConnected = false;
 			tRecv.join();
@@ -202,7 +201,7 @@ System.out.println("connected!");
 				e.printStackTrace();
 			}
 		}
-		*/
+		
 	}
 	
 	private class TFListener implements ActionListener {
@@ -235,7 +234,7 @@ System.out.println("connected!");
 					taContent.setText(taContent.getText() + str + '\n');
 				}
 			} catch (SocketException e) {
-				System.out.println("ÍË³öÁË£¬bye!");
+				System.out.println("Íbye¬bye!");
 			} catch (IOException e) {
 				e.printStackTrace();
 			} 
@@ -245,3 +244,4 @@ System.out.println("connected!");
 	}
 }
 	
+*/
