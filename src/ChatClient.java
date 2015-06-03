@@ -13,6 +13,7 @@ public class ChatClient extends Frame
 	DataInputStream dis=null;
 	Thread tRecv = new Thread(new RecvThread());
 	
+	
 	public static void main(String[] args) 
 	{
 		new ChatClient().launchFrame();

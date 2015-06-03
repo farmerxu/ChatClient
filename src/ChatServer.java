@@ -46,7 +46,7 @@ System.out.println("a client connected!");
 	}
 	
 	class Client implements Runnable {
-		private Socket s;
+		private Socket s;//这一点很重要，实现传递作用。可以访问其他类的成员变量
 		private DataInputStream dis = null;
 		private DataOutputStream dos = null;
 		private boolean bConnected = false;
@@ -67,7 +67,7 @@ System.out.println("a client connected!");
 				dos.writeUTF(str);
 			} catch (IOException e) {
 				clients.remove(this);
-				System.out.println("¶Ô·œÍË³öÁË£¡ÎÒŽÓListÀïÃæÈ¥µôÁË£¡");
+				System.out.println("bye-bye");
 				//e.printStackTrace();
 			}
 		}
