@@ -9,6 +9,7 @@ public class ChatClient extends Frame
 	private TextField tf = new TextField();
 	private TextArea  ta= new TextArea();
 	private Socket s = null;
+	DataOutputStream dos=null;
 	
 	public static void main(String[] args) 
 	{
@@ -31,6 +32,7 @@ public class ChatClient extends Frame
 			public void windowClosing(WindowEvent e)
 			{
 				System.exit(0);
+				disconnect();
 			}
 		});
 		connect();
@@ -42,15 +44,13 @@ public class ChatClient extends Frame
 		public void actionPerformed(ActionEvent e)	
 		{
 			String str = tf.getText().trim();
-			ta.setText(str);
+			//ta.setText(str);
 			tf.setText("");
-			DataOutputStream dos=null;;
 			try
 			{
 				dos = new DataOutputStream(s.getOutputStream());
 				dos.writeUTF(str);
 				dos.flush();
-				//dos.close();
 			}
 			catch (IOException e1)
 			{
@@ -58,6 +58,17 @@ public class ChatClient extends Frame
 System.out.println("write failure");	
 			}
 		}
+	}
+	
+	public void disconnect() {
+		try {
+			dos.close();
+			s.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public void connect()
@@ -68,6 +79,7 @@ System.out.println("write failure");
 			 System.out.println("client connected");		
 		}  catch (IOException e) 
 		{
+			
 			e.printStackTrace();
 		}
 	}

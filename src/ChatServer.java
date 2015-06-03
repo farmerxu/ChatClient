@@ -1,11 +1,13 @@
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 public class ChatServer 
 {
 	ServerSocket ss=null;
-	boolean start= 
-			false;
+	boolean start= false;
+	List<Client> clients = new  ArrayList<Client>();
+	
 	public static void main(String[] args) 
 	{
 		new ChatServer().start();
@@ -22,6 +24,7 @@ public class ChatServer
 				Client c = new Client(s);
 System.out.println("a client connected!");
 				new Thread(c).start();
+				clients.add(c);
 			}
 			
 		}catch (IOException e) 
@@ -46,6 +49,7 @@ System.out.println("a client connected!");
 		private boolean flag = false;
 		private Socket s;
 		private DataInputStream dis=null;
+		private DataOutputStream dos=null;
 		
 		Client(Socket s)
 		{
@@ -53,10 +57,20 @@ System.out.println("a client connected!");
 			try 
 			{
 				dis=new DataInputStream(s.getInputStream());
+				dos=new DataOutputStream(s.getOutputStream());
 				flag =true;
 			} catch (IOException e) 
 			{
 				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		public void send(String str)
+		{
+			try {
+				dos.writeUTF(str);
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -70,8 +84,12 @@ System.out.println("a client connected!");
 				{
 					String str;
 					str = dis.readUTF();
-					
-	System.out.println(str);
+					for(int i=0;i<clients.size();i++)
+					{
+						Client c = clients.get(i);
+						c.send(str);
+						System.out.println(str);
+					}
 				}	
 			}catch (IOException e)
 			{
@@ -84,10 +102,17 @@ System.out.println("a client connected!");
 					if(dis!=null)
 					{
 						dis.close();
+						dis=null;
+					}
+					if(dos!=null)
+					{
+						dos.close();
+						dos=null;
 					}
 					if(s!=null)
 					{
 						s.close();
+						s=null;
 					}
 				}catch (IOException e1)
 				{
